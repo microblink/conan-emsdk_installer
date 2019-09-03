@@ -7,7 +7,7 @@ import os
 
 class EmSDKInstallerConan(ConanFile):
     name = "emsdk_installer"
-    version = "1.38.42"
+    version = "1.38.43"
     description = "Emscripten is an Open Source LLVM to JavaScript compiler"
     url = "https://github.com/bincrafters/conan-emsdk_installer"
     homepage = "https://github.com/kripken/emscripten"
@@ -19,6 +19,12 @@ class EmSDKInstallerConan(ConanFile):
     settings = {
         "os_build": ['Windows', 'Linux', 'Macos'],
         "arch_build": ['x86_64']
+    }
+    options = {
+        'fastcomp': [True, False]
+    }
+    default_options = {
+        'fastcomp': True
     }
     short_paths = True
     requires = "nodejs_installer/10.16.2@microblink/stable"
@@ -79,14 +85,15 @@ class EmSDKInstallerConan(ConanFile):
                    "Windows": "zip"}.get(str(self.settings.os_build))
             self._touch(os.path.join("zips", "node-v8.9.1-%s-x64.%s" % (platform, ext)))
             self._run('%s list' % emsdk)
-            self._run('%s install sdk-%s-64bit' % (emsdk, self.version))
-            self._run('%s activate sdk-%s-64bit --embedded' % (emsdk, self.version))
+            suffix = '' if self.options.fastcomp is True else '-upstream'
+            self._run('%s install sdk-%s-64bit%s' % (emsdk, self.version, suffix))
+            self._run('%s activate sdk-%s-64bit%s --embedded' % (emsdk, self.version, suffix))
 
     def package(self):
         self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder)
         self.copy(pattern='*', dst='.', src=self._source_subfolder)
         emsdk = self.package_folder
-        emscripten = os.path.join(emsdk, 'fastcomp', 'emscripten')
+        emscripten = os.path.join(emsdk, 'fastcomp' if self.options.fastcomp is True else 'upstream', 'emscripten')
         toolchain = os.path.join(emscripten, 'cmake', 'Modules', 'Platform', 'Emscripten.cmake')
         # allow to find conan libraries
         tools.replace_in_file(toolchain,
@@ -101,7 +108,12 @@ class EmSDKInstallerConan(ConanFile):
 
     def _define_tool_var(self, name, value):
         suffix = '.bat' if os.name == 'nt' else ''
-        path = os.path.join(self.package_folder, 'fastcomp', 'emscripten', '%s%s' % (value, suffix))
+        path = os.path.join(
+            self.package_folder,
+            'fastcomp' if self.options.fastcomp is True else 'upstream',
+            'emscripten',
+            '%s%s' % (value, suffix)
+        )
         self._chmod_plus_x(path)
         self.output.info('Creating %s environment variable: %s' % (name, path))
         return path
@@ -109,7 +121,7 @@ class EmSDKInstallerConan(ConanFile):
     def package_info(self):
         emsdk = self.package_folder
         em_config = os.path.join(emsdk, '.emscripten')
-        emscripten = os.path.join(emsdk, 'fastcomp', 'emscripten')
+        emscripten = os.path.join(emsdk, 'fastcomp' if self.options.fastcomp is True else 'upstream', 'emscripten')
         em_cache = os.path.join(emsdk, '.emscripten_cache')
         toolchain = os.path.join(emscripten, 'cmake', 'Modules', 'Platform', 'Emscripten.cmake')
 

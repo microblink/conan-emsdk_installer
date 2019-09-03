@@ -9,6 +9,12 @@ import os
 class TestPackageConan(ConanFile):
     settings = "os", "build_type", "arch", "compiler"
     generators = "cmake"
+    options = {
+        'fastcomp': [True, False]
+    }
+    default_options = {
+        'fastcomp': True
+    }
 
     def build(self):
         cmake = CMake(self, generator='MinGW Makefiles' if os.name == 'nt' else 'Unix Makefiles', parallel=False)
