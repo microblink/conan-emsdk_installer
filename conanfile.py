@@ -66,7 +66,6 @@ class EmSDKInstallerConan(ConanFile):
             return 'upstream'
 
     def build(self):
-        self.output.info(str(self.options.items()))
         with tools.chdir(self._source_subfolder):
             emsdk = 'emsdk.bat' if os.name == 'nt' else './emsdk'
             if os.path.isfile("python_selector"):
