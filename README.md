@@ -38,6 +38,13 @@ The following command both runs all the steps of the conan file, and publishes t
 
     $ conan create bincrafters/testing
 
+### Building with upstream LLVM, instead of default fastcomp as compiler backend
+
+Use the following command:
+
+    # conan create bincrafters/testing -o emsdk_installer:fastcomp=False
+
+Note that upstream LLVM may not be stable for daily usage. Use this with caution.
 
 
 ## Add Remote
