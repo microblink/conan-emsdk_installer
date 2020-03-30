@@ -7,7 +7,7 @@ import os
 
 class EmSDKInstallerConan(ConanFile):
     name = "emsdk_installer"
-    version = "1.39.0"
+    version = "1.39.11"
     description = "Emscripten is an Open Source LLVM to JavaScript compiler"
     url = "https://github.com/bincrafters/conan-emsdk_installer"
     homepage = "https://github.com/kripken/emscripten"
@@ -24,10 +24,10 @@ class EmSDKInstallerConan(ConanFile):
         'fastcomp': [True, False]
     }
     default_options = {
-        'fastcomp': True
+        'fastcomp': False
     }
     short_paths = True
-    requires = "nodejs_installer/10.16.2@microblink/stable"
+    requires = "nodejs_installer/12.14.0@microblink/stable"
     _source_subfolder = "source_subfolder"
 
     def source(self):
