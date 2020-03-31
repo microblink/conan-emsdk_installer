@@ -99,7 +99,7 @@ class EmSDKInstallerConan(ConanFile):
 
     def package(self):
         self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder)
-        self.copy(pattern='*', dst='.', src=self._source_subfolder)
+        self.copy(pattern='*', dst='.', src=self._source_subfolder, symlinks=True)
         emsdk = self.package_folder
         emscripten = os.path.join(emsdk, self._backend_folder(), 'emscripten')
         toolchain = os.path.join(emscripten, 'cmake', 'Modules', 'Platform', 'Emscripten.cmake')
