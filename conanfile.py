@@ -9,9 +9,9 @@ class EmSDKInstallerConan(ConanFile):
     name = "emsdk_installer"
     version = "1.39.11"
     description = "Emscripten is an Open Source LLVM to JavaScript compiler"
-    url = "https://github.com/bincrafters/conan-emsdk_installer"
+    url = "https://github.com/microblink/conan-emsdk_installer"
     homepage = "https://github.com/kripken/emscripten"
-    author = "Bincrafters <bincrafters@gmail.com>"
+    author = "Bincrafters <bincrafters@gmail.com>, modified by Microblink"
     topcis = ("conan", "emsdk", "emscripten", "installer", "sdk")
     license = "MIT"
     exports = ["LICENSE.md"]
