@@ -12,7 +12,7 @@ class EmSDKInstallerConan(ConanFile):
     url = "https://github.com/microblink/conan-emsdk_installer"
     homepage = "https://github.com/kripken/emscripten"
     author = "Bincrafters <bincrafters@gmail.com>, modified by Microblink"
-    topcis = ("conan", "emsdk", "emscripten", "installer", "sdk")
+    topics = ("conan", "emsdk", "emscripten", "installer", "sdk")
     license = "MIT"
     exports = ["LICENSE.md"]
 
