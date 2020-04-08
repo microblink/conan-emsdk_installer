@@ -91,7 +91,7 @@ class EmSDKInstallerConan(ConanFile):
             self._touch(os.path.join("zips", "node-v8.9.1-%s-x64.%s" % (platform, ext)))
             self._run('%s list' % emsdk)
             if self.options.fastcomp:
-                suffix = ''
+                suffix = '-fastcomp'
             else:
                 suffix = '-upstream'
             self._run('%s install sdk-%s-64bit%s' % (emsdk, self.version, suffix))
