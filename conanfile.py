@@ -7,7 +7,7 @@ import os
 
 class EmSDKInstallerConan(ConanFile):
     name = "emsdk_installer"
-    version = "1.39.13"
+    version = "1.39.15"
     description = "Emscripten is an Open Source LLVM to JavaScript compiler"
     url = "https://github.com/microblink/conan-emsdk_installer"
     homepage = "https://github.com/kripken/emscripten"
@@ -27,7 +27,6 @@ class EmSDKInstallerConan(ConanFile):
         'fastcomp': False
     }
     short_paths = True
-    requires = "nodejs_installer/12.14.0@microblink/stable"
     _source_subfolder = "source_subfolder"
 
     def source(self):
@@ -40,13 +39,6 @@ class EmSDKInstallerConan(ConanFile):
     def _run(self, command):
         self.output.info(command)
         self.run(command)
-
-    @staticmethod
-    def _create_dummy_file(directory):
-        if not os.path.isdir(directory):
-            os.makedirs(directory)
-        with open(os.path.join(directory, "dummy"), "w") as f:
-            f.write("\n")
 
     @staticmethod
     def _touch(filename):
@@ -76,19 +68,8 @@ class EmSDKInstallerConan(ConanFile):
                 self._chmod_plus_x("python_selector")
             self._chmod_plus_x('emsdk')
 
-            # skip undesired installation of tools (nodejs, java, python)
-            # FIXME: if someone knows easier way to skip installation of tools, please tell me
-            self._create_dummy_file(os.path.join("node", "8.9.1_64bit"))
-            self._create_dummy_file(os.path.join("java", "8.152_64bit"))
             if not os.path.isdir("zips"):
                 os.makedirs("zips")
-            platform = {"Macos": "darwin",
-                        "Windows": "win",
-                        "Linux": "linux"}.get(str(self.settings.os_build))
-            ext = {"Macos": "tar.gz",
-                   "Linux": "tar.xz",
-                   "Windows": "zip"}.get(str(self.settings.os_build))
-            self._touch(os.path.join("zips", "node-v8.9.1-%s-x64.%s" % (platform, ext)))
             self._run('%s list' % emsdk)
             if self.options.fastcomp:
                 suffix = '-fastcomp'
