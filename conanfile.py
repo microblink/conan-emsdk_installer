@@ -92,6 +92,16 @@ class EmSDKInstallerConan(ConanFile):
         self.output.info('Creating %s environment variable: %s' % (name, path))
         return path
 
+    @property
+    def _host_arch(self):
+        if self.settings.arch_build == 'macos_fat':
+            return 'x86_64'
+        else:
+            return self.settings.arch_build
+
+    def package_id(self):
+        self.info.settings.arch_build = self._host_arch
+
     def package_info(self):
         emsdk = self.package_folder
         em_config = os.path.join(emsdk, '.emscripten')
