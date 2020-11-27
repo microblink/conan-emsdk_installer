@@ -18,7 +18,7 @@ class EmSDKInstallerConan(ConanFile):
 
     settings = {
         "os_build": ['Windows', 'Linux', 'Macos'],
-        "arch_build": ['x86_64']
+        "arch_build": ['x86_64', 'macos_fat']
     }
     short_paths = True
     _source_subfolder = "source_subfolder"
